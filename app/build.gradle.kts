@@ -8,9 +8,7 @@ plugins {
 
 android {
     namespace = "com.example.level_up"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 3
 
     defaultConfig {
         applicationId = "com.example.level_up"
