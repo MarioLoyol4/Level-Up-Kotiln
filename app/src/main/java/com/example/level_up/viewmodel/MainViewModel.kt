@@ -18,6 +18,23 @@ class MainViewModel : ViewModel(){
             _navEvents.emit(NavigationEvent.NavigateTo(appRoute))
         }
     }
+    fun navigateTo(
+        appRoute: AppRoute,
+        popUpRoute: AppRoute? = null,
+        inclusive: Boolean = false,
+        singleTop: Boolean = false
+    ){
+        CoroutineScope(Dispatchers.Main).launch {
+            _navEvents.emit(
+                NavigationEvent.NavigateTo(
+                    appRoute = appRoute,
+                    popUpRoute = popUpRoute,
+                    inclusive = inclusive,
+                    singleTop = singleTop
+                )
+            )
+        }
+    }
 
     fun navigateBack(){
         CoroutineScope(Dispatchers.Main).launch {

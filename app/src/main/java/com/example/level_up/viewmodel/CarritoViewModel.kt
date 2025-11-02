@@ -3,35 +3,44 @@ package com.example.level_up.viewmodel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
 import com.example.level_up.model.Producto
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
-class CarritoViewModel {
+class CarritoViewModel : ViewModel(){
 
-    var cartItems by mutableStateOf<List<Producto>>(emptyList())
-        private set
+    private val _cartItems = MutableStateFlow<List<Producto>>(emptyList())
+    val cartItems = _cartItems.asStateFlow()
+
 
     fun addToCart(producto: Producto) {
-        cartItems = cartItems + producto
+        _cartItems.update { currentList ->
+            currentList + producto
+        }
     }
 
     fun removeFromCart(producto: Producto) {
-        cartItems = cartItems - producto
+        _cartItems.update { currentList ->
+            currentList - producto
+        }
     }
 
     fun getTotalPrice(): Double {
-        return cartItems.sumOf { it.precio }
+        return _cartItems.value.sumOf { it.precio }
     }
 
     fun clearCart() {
-        cartItems = emptyList()
+        _cartItems.update { emptyList() }
     }
 
     fun isCartEmpty(): Boolean {
-        return cartItems.isEmpty()
+        return _cartItems.value.isEmpty()
     }
 
     fun getItemCount(): Int {
-        return cartItems.size
+        return _cartItems.value.size
     }
 
 }

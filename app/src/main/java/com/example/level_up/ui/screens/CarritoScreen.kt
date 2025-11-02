@@ -9,27 +9,31 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.level_up.viewmodel.CarritoViewModel
 import com.example.level_up.model.Producto
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CarritoScreen(
-    onBack: () -> Unit,
+    navController: NavController,
+    carritoViewModel: CarritoViewModel
 ) {
-    val carritoViewModel: CarritoViewModel = viewModel()
-    val cartItems = carritoViewModel.cartItems
+
+    val cartItems by carritoViewModel.cartItems.collectAsState()
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Carrito 🛒") },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    IconButton(onClick = {navController.popBackStack()}) {
                         Icon(Icons.Default.Close, "regresar")
                     }
                 }
@@ -58,7 +62,7 @@ fun CarritoScreen(
                     items(cartItems) { producto ->
                         CartItem(
                             producto = producto,
-                            onRemove = { carritoViewModel.removeFromCart(producto) }
+                            onRemove = {carritoViewModel.removeFromCart(producto)}
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                     }

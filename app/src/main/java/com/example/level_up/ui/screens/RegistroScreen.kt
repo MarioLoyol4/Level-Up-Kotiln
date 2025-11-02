@@ -33,15 +33,15 @@ import com.example.level_up.viewmodel.RegistroViewModel
 
 @Composable
 fun RegistroScreen(
-    onNavigateToHome: () -> Unit,
-    onBackToLogin: () -> Unit
+    viewModel: RegistroViewModel,
+    navController: NavController
 ) {
-    val viewModel: RegistroViewModel = viewModel()
+
     val estado by viewModel.estado.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())// sirve para darle para abajo (no se que hize que el boton de registrarse no se veia xd)
+            .verticalScroll(rememberScrollState())
             .padding(16.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -51,7 +51,7 @@ fun RegistroScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Start
         ) {
-            TextButton(onClick = onBackToLogin) {
+            TextButton(onClick = {navController.popBackStack()}) {
                 Text("← Volver al Login")
             }
         }
@@ -160,12 +160,14 @@ fun RegistroScreen(
             Button(
                 onClick = {
                     if (viewModel.estaValidadoElFormulario() && estado.aceptaTerminos) {
-                        onNavigateToHome()
+                        navController.navigate(AppRoute.Home.route){
+                            popUpTo(AppRoute.Registro.route){ inclusive = true}
+                        }
                     }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(35.dp),
+                    .height(48.dp),
                 enabled = estado.aceptaTerminos
             ) {
                 Text(
@@ -173,14 +175,7 @@ fun RegistroScreen(
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
-            if (!estado.aceptaTerminos) {
-                Text(
-                    "se deben aceptar los terminos y condiciones para poder acceder",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
+
         }
 
     }

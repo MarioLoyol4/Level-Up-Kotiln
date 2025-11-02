@@ -4,12 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,69 +32,70 @@ import com.example.level_up.viewmodel.RegistroViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 class MainActivity : ComponentActivity() {
-    private val homeViewModel: HomeViewModel by viewModels()
-    private val carritoViewModel: CarritoViewModel by viewModels()
-    private val registroViewModel: RegistroViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             LevelUpTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    val navController = rememberNavController()
+                val mainViewModel : MainViewModel = viewModel()
+                val registroViewModel : RegistroViewModel = viewModel()
+                val homeViewModel : HomeViewModel = viewModel()
+                val carritoViewModel : CarritoViewModel = viewModel()
 
-                    NavHost(
-                        navController = navController,
-                        startDestination = "login"
-                    ) {
-                        composable("login") {
-                            LoginScreen(
-                                onLoginSuccess = {
-                                    navController.navigate("home")
-                                },
-                                onNavigateToRegister = {
-                                    navController.navigate("registro")
-                                }
-                            )
-                        }
+                val navController = rememberNavController()
 
-                        composable("registro") {
-                            RegistroScreen(
-                                onNavigateToHome = {
-                                    navController.navigate("home")
-                                },
-                                onBackToLogin = {
-                                    navController.popBackStack()
-                                }
-                            )
-                        }
-
-                        composable("home") {
-                            HomeScreen(
-                                onNavigateToCart = {
-                                    navController.navigate("carrito")
-                                },
-                                onLogout = {
-                                    navController.navigate("login") {
-                                        popUpTo("home") { inclusive = true }
+                LaunchedEffect(Unit) {
+                    mainViewModel.navEvents.collectLatest{ event ->
+                        when(event){
+                            is NavigationEvent.NavigateTo -> {
+                                navController.navigate(event.appRoute.route){
+                                    event.popUpRoute?.let {
+                                        popUpTo(it.route){ inclusive = event.inclusive}
                                     }
+                                    launchSingleTop = event.singleTop
                                 }
-                            )
-                        }
-
-                        composable("carrito") {
-                            CarritoScreen(
-                                onBack = {
-                                    navController.popBackStack()
-                                }
-                            )
+                            }
+                            is NavigationEvent.NavigateUp -> navController.navigateUp()
+                            is NavigationEvent.PopBackStack -> navController.popBackStack()
                         }
                     }
                 }
+
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    NavHost(
+                        navController = navController,
+                        startDestination = AppRoute.Login.route,
+                        modifier = Modifier.padding(innerPadding)
+                    ){
+
+                        composable(AppRoute.Login.route) {
+                            LoginScreen(
+                                onNavigateToRegister = {
+                                    navController.navigate(AppRoute.Registro.route)
+                                },
+                                onLoginSuccess = {
+                                    navController.navigate(AppRoute.Home.route){
+                                        popUpTo(AppRoute.Login.route){ inclusive = true}
+                                    }
+
+                                }
+                            )
+                        }
+
+                        composable(AppRoute.Registro.route){
+                            RegistroScreen(registroViewModel, navController)
+                        }
+
+                        composable(AppRoute.Home.route){
+                            HomeScreen(mainViewModel,homeViewModel, carritoViewModel)
+                        }
+
+                        composable(AppRoute.Carrito.route){
+                            CarritoScreen(navController,carritoViewModel)
+                        }
+
+                    }
+                }
+
             }
         }
     }

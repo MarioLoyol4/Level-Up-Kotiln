@@ -54,14 +54,14 @@ import com.example.level_up.viewmodel.MainViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onNavigateToCart: () -> Unit,
-    onLogout: () -> Unit
+    mainViewModel: MainViewModel,
+    homeViewModel: HomeViewModel,
+    carritoViewModel: CarritoViewModel
 ) {
-    val homeViewModel: HomeViewModel = viewModel()
-    val carritoViewModel: CarritoViewModel = viewModel()
+
     val productos by homeViewModel.productos.collectAsState()
     val context = LocalContext.current
-    val cartItems = carritoViewModel.cartItems
+    val cartItems by carritoViewModel.cartItems.collectAsState()
 
     Scaffold(
         topBar = {
@@ -69,7 +69,9 @@ fun HomeScreen(
                 title = { Text("Level-Up Gamer") },
                 actions = {
 
-                    IconButton(onClick = onNavigateToCart) {
+                    IconButton(onClick = {
+                        mainViewModel.navigateTo(AppRoute.Carrito)
+                    }) {
                         BadgedBox(
                             badge = {
                                 if (cartItems.isNotEmpty()) {
@@ -87,7 +89,13 @@ fun HomeScreen(
                         Icon(Icons.Default.Share, "Compartir la aplicacion")
                     }
 
-                    IconButton(onClick = onLogout) {
+                    IconButton(onClick = {
+                        mainViewModel.navigateTo(
+                            AppRoute.Login,
+                            popUpRoute = AppRoute.Home,
+                            inclusive = true
+                        )
+                    }) {
                         Icon(Icons.Default.Close, "Cerrar Sesión")
                     }
                 }
