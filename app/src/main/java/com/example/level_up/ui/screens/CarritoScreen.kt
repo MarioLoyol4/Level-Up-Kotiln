@@ -89,7 +89,8 @@ fun CartItem(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     producto.nombre,
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.secondary
                 )
                 Text(
                     "$${producto.precio.toInt()}",

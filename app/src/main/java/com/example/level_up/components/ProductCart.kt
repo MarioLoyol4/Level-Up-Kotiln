@@ -4,6 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,7 +25,7 @@ fun ProductCard(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF1A1A1A))
+            .background(MaterialTheme.colorScheme.surface)
             .padding(16.dp)
     ) {
         Image(
@@ -38,14 +40,14 @@ fun ProductCard(
 
         Text(
             text = producto.nombre,
-            color = Color(0xFF39FF14),
+            color = MaterialTheme.colorScheme.secondary,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
         )
 
         Text(
             text = producto.descripcion,
-            color = Color(0xFFD3D3D3),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 14.sp,
             modifier = Modifier.padding(top = 4.dp)
         )
@@ -59,14 +61,18 @@ fun ProductCard(
         ) {
             Text(
                 text = "$${producto.precio.toInt()}",
-                color = Color(0xFF1E90FF),
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
 
             Button(
                 onClick = onAddToCart,
-                modifier = Modifier.width(100.dp)
+                modifier = Modifier.width(100.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                )
             ) {
                 Text("añadir")
             }

@@ -31,7 +31,7 @@ class HomeViewModel : ViewModel() {
             Producto("JM01",
                 "Juegos de Mesa",
                 "Catan",
-                "",
+                "Juego de mesa",
                 15990.0,
                 R.drawable.catan
             )
