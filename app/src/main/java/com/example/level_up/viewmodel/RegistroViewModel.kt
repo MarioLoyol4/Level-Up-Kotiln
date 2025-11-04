@@ -2,8 +2,8 @@ package com.example.level_up.viewmodel
 
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
-import com.example.level_up.model.RegistroErrores
 import com.example.level_up.model.RegistroUiState
+import com.example.level_up.model.RegistroErrores
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update

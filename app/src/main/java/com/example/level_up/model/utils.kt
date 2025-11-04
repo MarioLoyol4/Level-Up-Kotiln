@@ -26,7 +26,6 @@ fun launchShareIntent(context: Context) {
             putExtra(Intent.EXTRA_TEXT, "Echale un vistazo a Level-Up Gamer, la mejor tienda gamer en todo chile")
             type = "text/plain"
         }
-
         val shareIntent = Intent.createChooser(sendIntent, "Compartir Level-Up Gamer")
         context.startActivity(shareIntent)
     } catch (e: Exception) {

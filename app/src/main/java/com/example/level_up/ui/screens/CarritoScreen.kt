@@ -18,6 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.level_up.viewmodel.CarritoViewModel
 import com.example.level_up.model.Producto
+import com.example.level_up.ui.screens.CartItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

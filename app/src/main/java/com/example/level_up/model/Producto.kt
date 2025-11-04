@@ -1,6 +1,5 @@
 package com.example.level_up.model
 
-import android.graphics.Bitmap
 
 data class Producto(
     val codigo: String,
