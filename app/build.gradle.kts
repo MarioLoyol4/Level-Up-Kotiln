@@ -54,17 +54,20 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
 
+    implementation("androidx.activity:activity-compose:1.9.0")
+    implementation("androidx.compose.material3:material3:1.3.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.4")
 
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
 
-
+    implementation("org.jetbrains.kotlin:kotlin-coroutines-android:1.8.0")
+    
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-
 
     implementation(libs.androidx.navigation.compose)
 
-
     coreLibraryDesugaring(libs.android.desugar.jdk.libs)
-
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
