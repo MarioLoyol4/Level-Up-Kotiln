@@ -32,21 +32,21 @@ fun CarritoScreen(
 ) {
 
     val cartItems by carritoViewModel.cartItems.collectAsState()
-    val totalPrice = carritoViewModel.getTotalPrice()
+    val totalPrice by carritoViewModel.totalPrice.collectAsState()
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        "Carrito 🛒",
+                        "Carrito 🛒 (${cartItems.size})",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.SemiBold
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.Close, "Regresar")
+                        Icon(Icons.Default.Close, "Cerrar")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -69,6 +69,7 @@ fun CarritoScreen(
                     Column(
                         modifier = Modifier.padding(16.dp)
                     ) {
+
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
@@ -88,13 +89,11 @@ fun CarritoScreen(
                             )
                         }
 
-                        Spacer(modifier = Modifier.height(12.dp))
-
 
                         Button(
                             onClick = {
-                                carritoViewModel.clearCart()
-                                navController.navigate("compra_exitosa")
+                                // Aquí se supone que va lo que sucede despues de confirmar la compra, pero no se que poner
+
                             },
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
@@ -107,7 +106,7 @@ fun CarritoScreen(
                             )
                         ) {
                             Text(
-                                "Realizar compra",
+                                "Procesar Compra - $${String.format("%.0f", totalPrice)}",
                                 style = MaterialTheme.typography.labelLarge,
                                 fontWeight = FontWeight.Medium
                             )
@@ -129,19 +128,19 @@ fun CarritoScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.ShoppingCart,
-                        contentDescription = "El carrito esta vacio",
+                        contentDescription = "",
                         modifier = Modifier.size(64.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        "Tu carrito esta vacio",
+                        "El carrito esta vacio",
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        "Agrega algun producto para continiar",
+                        "Agrega algunos productos para continuar",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -158,7 +157,9 @@ fun CarritoScreen(
                 items(cartItems) { producto ->
                     CartItem(
                         producto = producto,
-                        onRemove = { carritoViewModel.removeFromCart(producto) }
+                        onRemove = {
+                            carritoViewModel.removeFromCart(producto)
+                        }
                     )
                 }
             }
@@ -185,7 +186,6 @@ fun CartItem(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-
             Image(
                 painter = painterResource(id = producto.imagen),
                 contentDescription = "Imagen de ${producto.nombre}",
@@ -210,6 +210,7 @@ fun CartItem(
                 Spacer(modifier = Modifier.height(4.dp))
 
 
+
                 Text(
                     text = "$${String.format("%.0f", producto.precio)}",
                     style = MaterialTheme.typography.bodyLarge,
@@ -217,8 +218,6 @@ fun CartItem(
                     color = MaterialTheme.colorScheme.primary
                 )
             }
-
-
             IconButton(
                 onClick = onRemove,
                 modifier = Modifier.size(48.dp)
