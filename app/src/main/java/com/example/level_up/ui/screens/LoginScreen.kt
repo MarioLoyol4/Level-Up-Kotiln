@@ -64,9 +64,7 @@ fun LoginScreen(
 
         Button(
             onClick = {
-                if (viewModel.onLoginClick()) {
-                    onLoginSuccess()
-                }
+                viewModel.performLogin(onSucces = onLoginSuccess)
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(

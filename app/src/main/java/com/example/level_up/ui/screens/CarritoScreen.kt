@@ -1,5 +1,6 @@
 package com.example.level_up.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,14 +16,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.node.ModifierNodeElement
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.level_up.viewmodel.CarritoViewModel
 import com.example.level_up.model.Producto
+import com.example.level_up.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,9 +36,12 @@ fun CarritoScreen(
     navController: NavController,
     carritoViewModel: CarritoViewModel = viewModel()
 ) {
+    val context = LocalContext.current
 
     val cartItems by carritoViewModel.cartItems.collectAsState()
     val totalPrice by carritoViewModel.totalPrice.collectAsState()
+    val valorDolar by carritoViewModel.valorDolar.collectAsState()
+
 
     Scaffold(
         topBar = {
@@ -89,10 +98,24 @@ fun CarritoScreen(
                             )
                         }
 
+                        if (valorDolar != null && valorDolar!! > 0){
+                            val totalUsd = totalPrice / valorDolar!!
+                            Text(
+                                text = "Aprox: US$ $${String.format("%.2f", totalUsd)}",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.secondary,
+                                modifier = Modifier.align(Alignment.End)
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
 
                         Button(
                             onClick = {
-                                // Aquí se supone que va lo que sucede despues de confirmar la compra, pero no se que poner
+                                carritoViewModel.clearCart()
+                                Toast.makeText(context, "!Compra realizada con exito!", Toast.LENGTH_LONG).show()
+                                navController.popBackStack()
 
                             },
                             modifier = Modifier.fillMaxWidth(),
@@ -106,7 +129,7 @@ fun CarritoScreen(
                             )
                         ) {
                             Text(
-                                "Procesar Compra - $${String.format("%.0f", totalPrice)}",
+                                "Procesar Compra",
                                 style = MaterialTheme.typography.labelLarge,
                                 fontWeight = FontWeight.Medium
                             )
@@ -186,13 +209,14 @@ fun CartItem(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = producto.imagen),
+            AsyncImage(
+                model = producto.imagen,
                 contentDescription = "Imagen de ${producto.nombre}",
                 modifier = Modifier
                     .size(80.dp)
                     .clip(MaterialTheme.shapes.medium),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(R.drawable.ic_launcher_foreground)
             )
 
             Spacer(modifier = Modifier.width(16.dp))

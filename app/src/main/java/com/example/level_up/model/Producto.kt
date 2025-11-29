@@ -2,10 +2,10 @@ package com.example.level_up.model
 
 
 data class Producto(
-    val codigo: String,
+    val id: String,
     val categoria: String,
     val nombre: String,
     val descripcion: String,
     val precio: Double,
-    val imagen: Int
+    val imagen: String
 )

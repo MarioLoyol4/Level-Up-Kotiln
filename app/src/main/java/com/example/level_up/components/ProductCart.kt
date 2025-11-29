@@ -11,11 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.level_up.model.Producto
+import com.example.level_up.R
 
 @Composable
 fun ProductCard(
@@ -28,12 +31,15 @@ fun ProductCard(
             .background(MaterialTheme.colorScheme.surface)
             .padding(16.dp)
     ) {
-        Image(
-            painter = painterResource(id = producto.imagen),
+        AsyncImage(
+            model = producto.imagen,
             contentDescription = producto.nombre,
             modifier = Modifier
                 .size(120.dp)
-                .align(Alignment.CenterHorizontally)
+                .align(Alignment.CenterHorizontally),
+            contentScale = ContentScale.Fit,
+            placeholder = painterResource(R.drawable.ic_launcher_foreground),
+            error = painterResource(R.drawable.ic_launcher_foreground)
         )
 
         Spacer(modifier = Modifier.height(12.dp))

@@ -1,12 +1,17 @@
 package com.example.level_up.viewmodel
 
+import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.level_up.model.RegisterRequest
 import com.example.level_up.model.RegistroUiState
 import com.example.level_up.model.RegistroErrores
+import com.example.level_up.remote.BackendClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
@@ -38,6 +43,31 @@ class RegistroViewModel : ViewModel(){
         _estado.update { it.copy(direccion = nuevaDireccion, errores = it.errores.copy(direccion = null)) }
     }
 
+    fun performRegistro(onSucces: ()-> Unit){
+        if (estaValidadoElFormulario()){
+            val form = _estado.value
+            viewModelScope.launch {
+                try {
+                    Log.d("API_REGISTRO", "Enviando datos de: ${form.email}")
+
+                    val request = RegisterRequest(
+                        nombre = form.nombre,
+                        email = form.email,
+                        password = form.contrasena
+                    )
+                    BackendClient.api.register(request)
+                    Log.d("API_REGISTRO", "Registro exitoso")
+                    onSucces()
+                } catch (e: Exception){
+                    Log.e("API_REGISTRO" , "Error: ${e.message}")
+                    _estado.update {
+                        it.copy(errores = it.errores.copy(email = "Error al registrar: ${e.message}"))
+                    }
+                }
+            }
+        }
+    }
+
     fun estaValidadoElFormulario(): Boolean{
         val formularioActual = _estado.value
 
@@ -59,6 +89,8 @@ class RegistroViewModel : ViewModel(){
         val hayErrores = listOfNotNull(errores.email, errores.fechaNacimiento).isNotEmpty()
         _estado.update { it.copy(errores = errores) }
         return !hayErrores
+
+
     }
 
     private fun validarEdad(fechaStr: String): String? {

@@ -161,11 +161,10 @@ fun RegistroScreen(
 
             Button(
                 onClick = {
-                    if (viewModel.estaValidadoElFormulario() && estado.aceptaTerminos) {
-                        navController.navigate(AppRoute.Home.route){
-                            popUpTo(AppRoute.Registro.route){ inclusive = true}
-                        }
-                    }
+                    viewModel.performRegistro(onSucces = {
+                        navController.popBackStack()
+
+                    })
                 },
                 modifier = Modifier
                     .fillMaxWidth()

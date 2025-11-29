@@ -17,13 +17,11 @@ import com.example.level_up.navigation.NavigationEvent
 import com.example.level_up.ui.screens.CarritoScreen
 import com.example.level_up.ui.screens.HomeScreen
 import com.example.level_up.ui.screens.LoginScreen
-import com.example.level_up.ui.screens.PostScreen
 import com.example.level_up.ui.screens.RegistroScreen
 import com.example.level_up.ui.theme.LevelUpTheme
 import com.example.level_up.viewmodel.CarritoViewModel
 import com.example.level_up.viewmodel.HomeViewModel
 import com.example.level_up.viewmodel.MainViewModel
-import com.example.level_up.viewmodel.PostViewModel
 import com.example.level_up.viewmodel.RegistroViewModel
 import kotlinx.coroutines.flow.collectLatest
 
@@ -31,10 +29,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val viewModel = PostViewModel()
+
 
         setContent {
-            PostScreen(viewModel)
+
             LevelUpTheme {
                 val mainViewModel : MainViewModel = viewModel()
                 val registroViewModel : RegistroViewModel = viewModel()
