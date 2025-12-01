@@ -1,14 +1,17 @@
 package com.example.level_up.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.level_up.R
 
 import com.example.level_up.navigation.AppRoute
 import com.example.level_up.viewmodel.LoginViewModel
@@ -29,6 +32,13 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Image(
+            painter = painterResource(id= R.drawable.logo_levelup),
+            contentDescription = "Logo Level Up",
+            modifier = Modifier
+                .size(200.dp)
+                .padding(bottom = 8.dp)
+        )
         Text("Level-Up", style = MaterialTheme.typography.headlineLarge)
 
         Spacer(modifier = Modifier.height(32.dp))
