@@ -132,7 +132,7 @@ fun RegistroScreen(
             OutlinedTextField(
                 value = estado.direccion,
                 onValueChange = viewModel::onDireccionChange,
-                label = { Text("direccion") },
+                label = { Text("Dirección") },
                 isError = estado.errores.direccion != null,
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),

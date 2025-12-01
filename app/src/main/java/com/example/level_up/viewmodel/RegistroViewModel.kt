@@ -86,7 +86,7 @@ class RegistroViewModel : ViewModel(){
             direccion = direccionError
         )
 
-        val hayErrores = listOfNotNull(errores.email, errores.fechaNacimiento).isNotEmpty()
+        val hayErrores = listOfNotNull(errores.email, errores.fechaNacimiento, errores.contrasena, errores.direccion, errores.nombre).isNotEmpty()
         _estado.update { it.copy(errores = errores) }
         return !hayErrores
 
