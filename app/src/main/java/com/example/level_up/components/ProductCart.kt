@@ -80,7 +80,7 @@ fun ProductCard(
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 )
             ) {
-                Text("añadir")
+                Text("Añadir")
             }
         }
     }

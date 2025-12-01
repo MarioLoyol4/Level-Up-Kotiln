@@ -114,7 +114,7 @@ fun CarritoScreen(
                         Button(
                             onClick = {
                                 carritoViewModel.clearCart()
-                                Toast.makeText(context, "!Compra realizada con exito!", Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, "Compra realizada con exito!", Toast.LENGTH_LONG).show()
                                 navController.popBackStack()
 
                             },
@@ -216,7 +216,8 @@ fun CartItem(
                     .size(80.dp)
                     .clip(MaterialTheme.shapes.medium),
                 contentScale = ContentScale.Crop,
-                placeholder = painterResource(R.drawable.ic_launcher_foreground)
+                placeholder = painterResource(R.drawable.ic_launcher_foreground),
+                error = painterResource(R.drawable.ic_launcher_foreground)
             )
 
             Spacer(modifier = Modifier.width(16.dp))
