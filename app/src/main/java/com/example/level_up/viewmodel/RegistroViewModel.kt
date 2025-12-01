@@ -73,7 +73,7 @@ class RegistroViewModel : ViewModel(){
 
         val emailError = if (!Patterns.EMAIL_ADDRESS.matcher(formularioActual.email).matches()) "El correo debe ser valido" else null
         val fechaError = validarEdad(formularioActual.fechaNacimiento)
-        val contrasenaError = if (formularioActual.contrasena.length < 6)"La contrasena debe tenerl al menos 6 caracteres" else null
+        val contrasenaError = if (formularioActual.contrasena.length < 6)"La contrasena debe tener al menos 6 caracteres" else null
         val nombreError = if (formularioActual.nombre.isBlank()) "El campo es obligatorio" else null
         val direccionError = if (formularioActual.direccion.isBlank()) "El campo es obligatorio" else null
 

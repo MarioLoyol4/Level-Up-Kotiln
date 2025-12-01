@@ -38,12 +38,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.level_up.components.ProductCard
+import com.example.level_up.data.SessionManager
 import com.example.level_up.model.Producto
 import com.example.level_up.model.launchShareIntent
 import com.example.level_up.model.launchWhatsAppSupport
@@ -63,6 +65,7 @@ fun HomeScreen(
     val productos by homeViewModel.productos.collectAsState()
     val context = LocalContext.current
     val cartItems by carritoViewModel.cartItems.collectAsState()
+    val sessionManager = remember { SessionManager(context) }
 
     LaunchedEffect(Unit) {
         homeViewModel.fetchProductos()
@@ -95,6 +98,8 @@ fun HomeScreen(
                     }
 
                     IconButton(onClick = {
+                        carritoViewModel.clearCart()
+                        sessionManager.clearSession()
                         mainViewModel.navigateTo(
                             AppRoute.Login,
                             popUpRoute = AppRoute.Home,
